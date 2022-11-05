@@ -1,4 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
+import { Board } from './board.model';
 import { BoardsService } from './boards.service';
 
 @Controller('boards')
@@ -12,7 +13,7 @@ export class BoardsController {
     // boardsService 를 DI 해줬기 때문에
     // boardsService 에 있는 핸들러를 사용할 수 있음
     @Get('/') // '/' 는 루트라면 생략 가능
-    getAllBoards() {
+    getAllBoards(): Board[] {
         return this.boardsService.getAllBoards();
     }
 
