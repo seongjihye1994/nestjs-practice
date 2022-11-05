@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { Board } from './board.model';
 import { BoardsService } from './boards.service';
 import { CreateBoardDto } from './dto/create-board.dto';
@@ -33,6 +33,17 @@ export class BoardsController {
         // 이렇게 하나씩 처리하기 힘들어지니 dto 를 생성해서 dto 로 한번에 받을 수 있다.
         // -> CreateBoardDto 로 request 파라미터 한번에 받기!
         return this.boardsService.createBoard(createBoardDto);
+    }
+
+    // 게시물 id 로 게시물 하나 조회
+    @Get('/:id')
+    getBoardById(@Param('id') id: string): Board {
+        // http body 가 아닌, header 에 있는 파라미터 값은 @Param() 으로 가져온다.
+        return this.boardsService.getBoardById(id);
+
+        // 파라미터가 복수개일 때는 @Param() 만 작성하면 되고
+        // 여러개의 파라미터 중 지정해서 가져오고 싶으면
+        // @Param('가져올 키')로 가져온다.
     }
 
 }

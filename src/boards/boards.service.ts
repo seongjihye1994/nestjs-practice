@@ -29,6 +29,10 @@ export class BoardsService {
         return board; // 생셩한 게시물 리턴
     }
 
+    getBoardById(id: string): Board {
+        return this.boards.find(board => board.id === id);
+    }
+
 }
 
 // 서비스는 Injectable 데코레이터가 있음
