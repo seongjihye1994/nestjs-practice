@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { Board } from './board.model';
 import { BoardsService } from './boards.service';
 import { CreateBoardDto } from './dto/create-board.dto';
@@ -44,6 +44,12 @@ export class BoardsController {
         // 파라미터가 복수개일 때는 @Param() 만 작성하면 되고
         // 여러개의 파라미터 중 지정해서 가져오고 싶으면
         // @Param('가져올 키')로 가져온다.
+    }
+
+    // 게시물 id 로 게시물 하나 삭제
+    @Delete(':/id')
+    deleteBoard(@Param('id') id: string): void {
+        this.boardsService.deleteBoard(id);
     }
 
 }
