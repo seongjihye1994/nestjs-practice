@@ -39,6 +39,12 @@ export class BoardsService {
         // 같은 것만 찾아서 지워줌
     }
 
+    updateBoardStatus(id: string, status: BoardStatus): Board {
+        const board = this.getBoardById(id);
+        board.status = status;
+        return board;
+    }
+
 }
 
 // 서비스는 Injectable 데코레이터가 있음
