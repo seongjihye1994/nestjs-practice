@@ -33,6 +33,12 @@ export class BoardsService {
         return this.boards.find(board => board.id === id);
     }
 
+    deleteBoard(id: string): void {
+        this.boards.filter(board => board.id !== id);
+        // boards 배열에서 특정 id 와 같지 않은 것은 남기고
+        // 같은 것만 찾아서 지워줌
+    }
+
 }
 
 // 서비스는 Injectable 데코레이터가 있음
