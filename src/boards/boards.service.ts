@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { Board } from './board.model';
+import { Board, BoardStatus } from './board.model';
+import { v1 as uuid } from 'uuid'; // 여러개의 uuid 버전 중 v1 을 사용
 
 @Injectable()
 export class BoardsService {
@@ -11,6 +12,19 @@ export class BoardsService {
     getAllBoards(): Board[] { // : Board[] -> return type
         return this.boards;
     }
+
+    createBoard(title: string, description: string): Board {
+        const board: Board = {
+            id: uuid(), // id 는 uuid 를 적용
+            title,
+            description,
+            status: BoardStatus.PUBLIC // 처음 디폴트는 PUBLIC
+        }
+
+        this.boards.push(board); // 메모리에 생성한 게시물 push
+        return board; // 생셩한 게시물 리턴
+    }
+
 }
 
 // 서비스는 Injectable 데코레이터가 있음
