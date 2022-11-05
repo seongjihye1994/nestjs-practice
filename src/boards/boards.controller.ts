@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { Board } from './board.model';
 import { BoardsService } from './boards.service';
+import { CreateBoardDto } from './dto/create-board.dto';
 
 @Controller('boards')
 export class BoardsController {
@@ -22,13 +23,16 @@ export class BoardsController {
     // 게시물 생성
     @Post()
     createBoard(
-        @Body('title') title: string, 
-        @Body('description') description: string): Board {
+        @Body() createBoardDto: CreateBoardDto): Board {
         // 클라이언트가 보낸 파라미터를 가져오자.
         // nestjs에서는 @Body() body 로 가져올 수 있다.
         // express 에서의 req 와 비슷하다.
         // @Body('title') title -> 클라이언트가 입력한 title 을 가져온다.
-        return this.boardsService.createBoard(title, description);
+
+        // 하지만 클라이언트가 요청할 때 보내는 파라미터 필드가 많아지면
+        // 이렇게 하나씩 처리하기 힘들어지니 dto 를 생성해서 dto 로 한번에 받을 수 있다.
+        // -> CreateBoardDto 로 request 파라미터 한번에 받기!
+        return this.boardsService.createBoard(createBoardDto);
     }
 
 }
