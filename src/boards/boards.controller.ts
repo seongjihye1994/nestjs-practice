@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { Board } from './board.model';
 import { BoardsService } from './boards.service';
 
@@ -12,11 +12,24 @@ export class BoardsController {
 
     // boardsService 를 DI 해줬기 때문에
     // boardsService 에 있는 핸들러를 사용할 수 있음
+    
+    // 게시물 모두 조회
     @Get('/') // '/' 는 루트라면 생략 가능
     getAllBoards(): Board[] {
         return this.boardsService.getAllBoards();
     }
 
+    // 게시물 생성
+    @Post()
+    createBoard(
+        @Body('title') title: string, 
+        @Body('description') description: string): Board {
+        // 클라이언트가 보낸 파라미터를 가져오자.
+        // nestjs에서는 @Body() body 로 가져올 수 있다.
+        // express 에서의 req 와 비슷하다.
+        // @Body('title') title -> 클라이언트가 입력한 title 을 가져온다.
+        return this.boardsService.createBoard(title, description);
+    }
 
 }
 
