@@ -1,7 +1,15 @@
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class BoardsService {}
+export class BoardsService {
+
+    // 모든 게시물을 가져오는 핸들러 생성하기
+    private boards = [];
+
+    getAllBoards() {
+        return this.boards;
+    }
+}
 
 // 서비스는 Injectable 데코레이터가 있음
 // 컨트롤러를 제외한 서비스나 리포지토리는 Module 파일의 Providers 에 기재됨

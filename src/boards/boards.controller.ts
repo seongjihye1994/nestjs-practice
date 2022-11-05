@@ -1,4 +1,4 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { BoardsService } from './boards.service';
 
 @Controller('boards')
@@ -8,6 +8,15 @@ export class BoardsController {
     constructor(private boardsService: BoardsService) {}
     // 이 때 private 을 붙이지 않으면 에러남 -> boardsService 를 멤버 변수로 빼줘야 에러 해결
     // 근대 타입 스크립트는 private 을 기재해주면 에러 안남
+
+    // boardsService 를 DI 해줬기 때문에
+    // boardsService 에 있는 핸들러를 사용할 수 있음
+    @Get('/') // '/' 는 루트라면 생략 가능
+    getAllBoards() {
+        return this.boardsService.getAllBoards();
+    }
+
+
 }
 
 
