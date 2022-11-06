@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { Board, BoardStatus } from './board.model';
 import { BoardsService } from './boards.service';
 import { CreateBoardDto } from './dto/create-board.dto';
@@ -22,6 +22,7 @@ export class BoardsController {
 
     // 게시물 생성
     @Post()
+    @UsePipes(ValidationPipe) // DTO 에 적용한 pipe validator 를 사용하기 위해 적어줌
     createBoard(
         @Body() createBoardDto: CreateBoardDto): Board {
         // 클라이언트가 보낸 파라미터를 가져오자.
