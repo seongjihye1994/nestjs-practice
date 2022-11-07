@@ -11,7 +11,7 @@ import { Board } from './board.entity';
 export class BoardsService {
   // boardService가 boardRepository 를 사용하기 위해 DI
   constructor(
-    @InjectRepository(BoardRepository)
+    @InjectRepository(Board)
     private boardRepository: BoardRepository,
   ) {}
 
@@ -19,13 +19,28 @@ export class BoardsService {
   // async, await 을 사용해서 db 결과값을 모두 받은 후에 다른 로직 처리하도록 하자.
   // 만약 async와 await을 사용하지 않으면 db 조회가 모두 끝나지 않은 상태에서 다른 로직이 처리될 수 있다(비동기)
   async getBoardById(id: number): Promise<Board> {
-    const found = await this.boardRepository.findOneBy({ id });
+    const found = await this.boardRepository.findOne({ id });
 
     if (!found) {
       throw new NotFoundException(`Can't find Board with id ${id}`);
     }
 
     return found;
+  }
+
+  async createBoard(createBoardDto: CreateBoardDto): Promise<Board> {
+    return this.boardRepository.createBoard(createBoardDto);
+  }
+
+  async deleteBoard(id: number): Promise<void> {
+    const result = await this.boardRepository.delete(id);
+    console.log(`result: `, result);
+    // result:  DeleteResult { raw: [], affected: 1 } -> 영향 받은게 있을 때(즉 삭제 됐을 때)
+    // result:  DeleteResult { raw: [], affected: 0 } -> 영향 받은게 없을 때(즉 삭제 안됐을 때)
+
+    if (result.affected === 0) {
+      throw new NotFoundException(`Can't find Board with id ${id}`);
+    }
   }
 
   // // 모든 게시물을 가져오는 핸들러 생성하기
