@@ -29,7 +29,7 @@ export class BoardsService {
   }
 
   async createBoard(createBoardDto: CreateBoardDto): Promise<Board> {
-    return this.boardRepository.createBoard(createBoardDto);
+    return await this.boardRepository.createBoard(createBoardDto);
   }
 
   async deleteBoard(id: number): Promise<void> {
@@ -41,6 +41,15 @@ export class BoardsService {
     if (result.affected === 0) {
       throw new NotFoundException(`Can't find Board with id ${id}`);
     }
+  }
+
+  async updateBoardStatus(id: number, status: BoardStatus): Promise<Board> {
+    const board = await this.getBoardById(id); // 해당 게시글이 있는지 확인
+
+    board.status = status;
+
+    await this.boardRepository.save(board);
+    return board;
   }
 
   // // 모든 게시물을 가져오는 핸들러 생성하기

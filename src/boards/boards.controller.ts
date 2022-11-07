@@ -44,6 +44,14 @@ export class BoardsController {
     return this.boardsService.deleteBoard(id);
   }
 
+  @Patch('/:id/status')
+  updateBoardStatus(
+    @Param('id', ParseIntPipe) id: number,
+    @Param('status', BoardStatusValidationPipe) status: BoardStatus,
+  ) {
+    return this.boardsService.updateBoardStatus(id, status);
+  }
+
   // // 게시물 모두 조회
   // @Get('/') // '/' 는 루트라면 생략 가능
   // getAllBoards(): Board[] {
