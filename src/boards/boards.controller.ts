@@ -10,6 +10,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { BoardStatus } from './board-status.enum';
+import { Board } from './board.entity';
 import { BoardsService } from './boards.service';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { BoardStatusValidationPipe } from './pipes/board-status-validation.pipe';
@@ -23,6 +24,11 @@ export class BoardsController {
 
   // boardsService 를 DI 해줬기 때문에
   // boardsService 에 있는 핸들러를 사용할 수 있음
+
+  @Get('/:id')
+  getBoardById(@Param('id') id: number): Promise<Board> {
+    return this.boardsService.getBoardById(id);
+  }
 
   // // 게시물 모두 조회
   // @Get('/') // '/' 는 루트라면 생략 가능

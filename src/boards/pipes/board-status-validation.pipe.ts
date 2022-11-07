@@ -3,7 +3,7 @@ import {
   BadRequestException,
   PipeTransform,
 } from '@nestjs/common';
-import { BoardStatus } from '../board.model';
+import { BoardStatus } from '../board-status.enum';
 
 // 게시글의 상태를 업데이트 할 때 사용하는 커스텀 벨리데이터 파이프
 export class BoardStatusValidationPipe implements PipeTransform {
