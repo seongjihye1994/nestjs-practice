@@ -3,9 +3,31 @@ import { BoardStatus } from './board-status.enum';
 import { v1 as uuid } from 'uuid'; // 여러개의 uuid 버전 중 v1 을 사용
 import { CreateBoardDto } from './dto/create-board.dto';
 import { NotFoundException } from '@nestjs/common';
+import { BoardRepository } from './board.repository';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Board } from './board.entity';
 
 @Injectable()
 export class BoardsService {
+  // boardService가 boardRepository 를 사용하기 위해 DI
+  constructor(
+    @InjectRepository(BoardRepository)
+    private boardRepository: BoardRepository,
+  ) {}
+
+  // TypeORM 이 제공하는 findOne 메소드로 게시물 하나 조회하기
+  // async, await 을 사용해서 db 결과값을 모두 받은 후에 다른 로직 처리하도록 하자.
+  // 만약 async와 await을 사용하지 않으면 db 조회가 모두 끝나지 않은 상태에서 다른 로직이 처리될 수 있다(비동기)
+  async getBoardById(id: number): Promise<Board> {
+    const found = await this.boardRepository.findOneBy({ id });
+
+    if (!found) {
+      throw new NotFoundException(`Can't find Board with id ${id}`);
+    }
+
+    return found;
+  }
+
   // // 모든 게시물을 가져오는 핸들러 생성하기
   // private boards: Board[] = [];
   // // : Board[] -> Board 배열 타입
