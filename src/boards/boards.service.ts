@@ -3,16 +3,18 @@ import { BoardStatus } from './board-status.enum';
 import { v1 as uuid } from 'uuid'; // 여러개의 uuid 버전 중 v1 을 사용
 import { CreateBoardDto } from './dto/create-board.dto';
 import { NotFoundException } from '@nestjs/common';
-import { BoardRepository } from './board.repository';
-import { InjectRepository } from '@nestjs/typeorm';
 import { Board } from './board.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+// import { DataSource } from 'typeorm';
 
 @Injectable()
 export class BoardsService {
   // boardService가 boardRepository 를 사용하기 위해 DI
   constructor(
+    //데코레이터를 꼭 넣어줘야 한다.
     @InjectRepository(Board)
-    private boardRepository: BoardRepository,
+    private boardRepository: Repository<Board>,
   ) {}
 
   // TypeORM 이 제공하는 findOne 메소드로 게시물 하나 조회하기
@@ -29,7 +31,17 @@ export class BoardsService {
   }
 
   async createBoard(createBoardDto: CreateBoardDto): Promise<Board> {
-    return await this.boardRepository.createBoard(createBoardDto);
+    const { title, description } = createBoardDto;
+
+    const board = this.boardRepository.create({
+      title,
+      description,
+      status: BoardStatus.PUBLIC, // 맨 처음 생성할 때는 PUBLIC 디폴트
+    });
+
+    await this.boardRepository.save(board);
+
+    return board;
   }
 
   async deleteBoard(id: number): Promise<void> {
