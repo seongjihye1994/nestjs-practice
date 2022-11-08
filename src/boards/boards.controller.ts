@@ -47,9 +47,14 @@ export class BoardsController {
   @Patch('/:id/status')
   updateBoardStatus(
     @Param('id', ParseIntPipe) id: number,
-    @Param('status', BoardStatusValidationPipe) status: BoardStatus,
+    @Body('status', BoardStatusValidationPipe) status: BoardStatus,
   ) {
     return this.boardsService.updateBoardStatus(id, status);
+  }
+
+  @Get()
+  getAllBoard(): Promise<Board[]> {
+    return this.boardsService.getAllBoards();
   }
 
   // // 게시물 모두 조회
