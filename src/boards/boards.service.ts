@@ -64,6 +64,10 @@ export class BoardsService {
     return board;
   }
 
+  async getAllBoards(): Promise<Board[]> {
+    return this.boardRepository.find();
+  }
+
   // // 모든 게시물을 가져오는 핸들러 생성하기
   // private boards: Board[] = [];
   // // : Board[] -> Board 배열 타입
