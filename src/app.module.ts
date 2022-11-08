@@ -2,10 +2,11 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BoardsModule } from './boards/boards.module';
 import { typeORMConfig } from './configs/typeorm.config';
+import { AuthModule } from './auth/auth.module';
 // 모듈을 생성하면 자동으로 app.module.ts 에 import 된다.
 
 @Module({
-  imports: [TypeOrmModule.forRoot(typeORMConfig), BoardsModule], // 설정한 TypeOrmModule을 import 해서 설정파일을 잡아준다.
+  imports: [TypeOrmModule.forRoot(typeORMConfig), BoardsModule, AuthModule], // 설정한 TypeOrmModule을 import 해서 설정파일을 잡아준다.
 })
 
 // 모듈을 생성하면 자동으로 app.module.ts 에 import 된다.
