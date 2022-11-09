@@ -9,6 +9,8 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { AuthCredentialsDto } from './dto/auth-credential-dto';
+import { GetUser } from './get-user.decorator';
+import { User } from './user.entity';
 
 @Controller('auth')
 export class AuthController {
@@ -31,8 +33,9 @@ export class AuthController {
   @Post('/test')
   @UseGuards(AuthGuard()) // 테스트 시 유저 정보가 없으므로 Guards 미들웨어를 사용해 유저 정보를 빌림?
   // AuthGuard 를 이용하면 요청 안에 유저 정보를 넣어줄 수 있음 + 인증에 대한 미들웨어 처리 -> 토큰이 없거나 잘못된 토큰이라면 오류를 알려줌
-  test(@Req() req) {
-    console.log('req', req);
+  test(@GetUser() user: User) {
+    // @GetUser(): 커스텀 데코레이터 -> 인증 테스트에서 AuthGuard를 사용해 유저 정보를 req 안에 넣어줬는데, 이 req 안의 유저 정보를 user 객체로 변환해서 받을거임
+    console.log('user', user);
   }
 }
 
