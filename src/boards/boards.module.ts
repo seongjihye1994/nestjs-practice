@@ -1,11 +1,13 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from 'src/auth/auth.module';
 import { Board } from './board.entity';
 import { BoardsController } from './boards.controller';
 import { BoardsService } from './boards.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Board])], // BoardRepository 사용을 위한 모듈 임포트
+  imports: [TypeOrmModule.forFeature([Board]), AuthModule], // BoardRepository 사용을 위한 모듈 임포트
+  // 외부 AuthModule 사용을 위해 board module에 import 해줌
 
   // board 컨트롤러를 생성하면 board.mudule.ts 에 자동으로 업데이트됨
   controllers: [BoardsController],
