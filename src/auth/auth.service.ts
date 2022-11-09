@@ -58,8 +58,17 @@ export class AuthService {
       const accessToken = await this.jwtService.sign(payload); // sign 메소드로 토큰 생성 -> 이 메소드에서 시크릿 텍스트와 payload 를 합쳐서 jwt 토큰을 생성한다.
 
       return { accessToken };
+      // 생성한 토큰 클라이언트에 리턴 -> 클라이언트는 브라우저 쿠키에 저장, 이후 다시 요청 시 브라우저 쿠키에 저장된 토큰을 다시 헤더에 넣어서 서버로 요청
     } else {
       throw new UnauthorizedException('login failed');
     }
   }
+
+  // 로그인할 때 넘어온 payload로 서버에서 토큰 생성 후 클라이언트에 리턴
+  // 클라이언트는 응답 온 토큰을 브라우저 쿠키에 저장
+  // 이후 요청 시 헤더에 토큰 넣어서 서버에 요청
+  // 서버는 넘어온 토큰의 verify signatual를 가지고 유효성 체크
+  // 만약 유효하다면 payload에 있는 데이터로 DB에 유저 조회
+  // 만약 DB에 있는 유저라면 유저 객체 가져와서 리턴
+  // DB에 없는 유저라면 에러를 리턴
 }
