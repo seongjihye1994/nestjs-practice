@@ -10,6 +10,7 @@ import {
   ValidationPipe,
   ParseIntPipe,
   UseGuards,
+  Logger,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from 'src/auth/get-user.decorator';
@@ -23,6 +24,8 @@ import { BoardStatusValidationPipe } from './pipes/board-status-validation.pipe'
 @Controller('boards')
 @UseGuards(AuthGuard())
 export class BoardsController {
+  private log = new Logger('BoardsController');
+
   // boardController 는 boardsService를 DI
   constructor(private boardsService: BoardsService) {}
   // 이 때 private 을 붙이지 않으면 에러남 -> boardsService 를 멤버 변수로 빼줘야 에러 해결
@@ -43,6 +46,11 @@ export class BoardsController {
     @Body() createBoardDto: CreateBoardDto,
     @GetUser() user: User, // 커스텀 데코레이터 @GetUser 사용해서 user 정보 insert
   ): Promise<Board> {
+    this.log.verbose(
+      `User ${user.username} creating a new board. Payload: ${JSON.stringify(
+        createBoardDto,
+      )}`,
+    );
     return this.boardsService.createBoard(createBoardDto, user);
   }
 
@@ -66,6 +74,7 @@ export class BoardsController {
 
   @Get()
   getAllBoard(@GetUser() user: User): Promise<Board[]> {
+    this.log.verbose(`User ${user.username} trying to get all boards.`);
     return this.boardsService.getAllBoards(user);
   }
 
