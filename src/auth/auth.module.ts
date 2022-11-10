@@ -6,14 +6,17 @@ import { User } from './user.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './jwt.strategy';
+import * as config from 'config';
+
+const jwtConfig = config.get('jwt');
 
 @Module({
   imports: [
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
-      secret: 'Secret1234', // JWT 토큰 만들 때 이용하는 시크릿 텍스트 (아무거나)
+      secret: process.env.JWT_SECRET || jwtConfig.secret, // JWT 토큰 만들 때 이용하는 시크릿 텍스트 (아무거나)
       signOptions: {
-        expiresIn: 60 * 60, // JWT 만료시간
+        expiresIn: jwtConfig.expiresIn, // JWT 만료시간
       },
     }),
     TypeOrmModule.forFeature([User]),
