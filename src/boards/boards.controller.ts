@@ -49,8 +49,11 @@ export class BoardsController {
   // remove vs delete
   // remove 는 지울 대상이 DB에 없다면 에러, delete는 있으면 지우고 없으면 영향 x
   @Delete('/:id')
-  deleteById(@Param('id', ParseIntPipe) id: number): Promise<void> {
-    return this.boardsService.deleteBoard(id);
+  deleteById(
+    @Param('id', ParseIntPipe) id: number,
+    @GetUser() user: User,
+  ): Promise<void> {
+    return this.boardsService.deleteBoard(id, user);
   }
 
   @Patch('/:id/status')
