@@ -1,9 +1,12 @@
+import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule); // 앱 모듈 생성 후
+  const port = 3000;
   await app.listen(3000); // 앱 실행
+  Logger.log(`Application running on port ${port}`);
 }
 bootstrap();
 
