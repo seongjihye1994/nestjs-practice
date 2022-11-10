@@ -49,8 +49,8 @@ export class BoardsService {
     return board;
   }
 
-  async deleteBoard(id: number): Promise<void> {
-    const result = await this.boardRepository.delete(id);
+  async deleteBoard(id: number, user: User): Promise<void> {
+    const result = await this.boardRepository.delete({ id, user }); // 본인이 작성한 게시글만 삭제하도록
     console.log(`result: `, result);
     // result:  DeleteResult { raw: [], affected: 1 } -> 영향 받은게 있을 때(즉 삭제 됐을 때)
     // result:  DeleteResult { raw: [], affected: 0 } -> 영향 받은게 없을 때(즉 삭제 안됐을 때)
