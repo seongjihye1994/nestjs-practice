@@ -6,6 +6,7 @@ import { NotFoundException } from '@nestjs/common';
 import { Board } from './board.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { User } from 'src/auth/user.entity';
 // import { DataSource } from 'typeorm';
 
 @Injectable()
@@ -30,13 +31,17 @@ export class BoardsService {
     return found;
   }
 
-  async createBoard(createBoardDto: CreateBoardDto): Promise<Board> {
+  async createBoard(
+    createBoardDto: CreateBoardDto,
+    user: User,
+  ): Promise<Board> {
     const { title, description } = createBoardDto;
 
     const board = this.boardRepository.create({
       title,
       description,
       status: BoardStatus.PUBLIC, // 맨 처음 생성할 때는 PUBLIC 디폴트
+      user,
     });
 
     await this.boardRepository.save(board);

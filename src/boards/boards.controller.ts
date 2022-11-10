@@ -12,6 +12,8 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { GetUser } from 'src/auth/get-user.decorator';
+import { User } from 'src/auth/user.entity';
 import { BoardStatus } from './board-status.enum';
 import { Board } from './board.entity';
 import { BoardsService } from './boards.service';
@@ -34,10 +36,14 @@ export class BoardsController {
     return this.boardsService.getBoardById(id);
   }
 
+  // 게시글 생성 시 user 정보도 넣어주기 (어떤 user가 어떤 게시글을 생성하는지에 대해)
   @Post()
   @UsePipes(ValidationPipe)
-  createBoard(@Body() createBoardDto: CreateBoardDto): Promise<Board> {
-    return this.boardsService.createBoard(createBoardDto);
+  createBoard(
+    @Body() createBoardDto: CreateBoardDto,
+    @GetUser() user: User, // 커스텀 데코레이터 @GetUser 사용해서 user 정보 insert
+  ): Promise<Board> {
+    return this.boardsService.createBoard(createBoardDto, user);
   }
 
   // remove vs delete
