@@ -1,0 +1,13 @@
+# 개발 환경과 로컬 환경의 중복되는 설정 부분을 default.yaml 에 등록한다.
+server:
+  port: 3000
+
+db:
+  type: 'postgres'
+  port: 5432
+  database: 'board-app'
+
+jwt:
+  expiresIn: 3600
+
+# NODE_ENV가 production 이면 production.yml 파일을 사용

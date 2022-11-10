@@ -1,0 +1,9 @@
+# local 환경 세팅
+db:
+  host: 'localhost'
+  username: 'postgres'
+  password: '12341234'
+  synchronize: true # 앱 재시동 할 때마다 entity 데이터 보고 수정된 사항 db에 반영
+
+jwt:
+  secret: 'Secret1234'
