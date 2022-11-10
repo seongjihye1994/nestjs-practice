@@ -69,8 +69,16 @@ export class BoardsService {
     return board;
   }
 
-  async getAllBoards(): Promise<Board[]> {
-    return this.boardRepository.find();
+  async getAllBoards(user: User): Promise<Board[]> {
+    const query = this.boardRepository.createQueryBuilder('board'); // board 테이블을 대상으로 쿼리를 생성함
+
+    // 특정 사용자가 생성한 게시글만 가져오도록 (where절)
+    query.where('board.userId = :userId', { userId: user.id });
+
+    // where절로 select 쿼리 조회 (getMany)
+    const boards = await query.getMany();
+
+    return boards;
   }
 
   // // 모든 게시물을 가져오는 핸들러 생성하기
